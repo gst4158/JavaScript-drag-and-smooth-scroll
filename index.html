@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vanilla JavaScript smooth scroll</title>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      .controls {
+        display: flex;
+      }
+
+      .controls button {
+        margin-right: 12px;
+      }
+      
+      .controls button:last-child {
+        margin-right: 0;
+        margin-left: auto;
+      }
+
+      .instructions {
+        margin: 24px 4px 8px;
+      }
+
+      .wrapper {
+        border: 1px solid #ebebeb;
+        padding: 0;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, .25);
+        max-width: 100vw;
+      }
+
+      ul {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 80px 12px;
+        list-style: none;
+        overflow-x: scroll;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      ul::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+
+      li {
+        margin-right: 12px;
+      }
+
+      li:last-child {
+        margin-right: 0;
+      }
+
+      button {
+        display: block;
+        background: transparent;
+        border: 1px solid royalblue;
+        border-radius: 5px;
+        padding: 8px 12px;
+        white-space: nowrap;
+      }
+
+      button:hover,
+      button:focus {
+        cursor: pointer;
+        background: royalblue;
+        color: #ebebeb;
+      }
+
+      button:focus {
+        border-width: 2px;
+        border-color: navy;
+        padding: 7px 11px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div>
+      <p class="instructions">Drag and hold or click control buttons to navigate through buttons</p>
+      <div class="controls">
+        <button class="control-left" type="button">Scroll left</button>
+        <button class="control-right" type="button">Scroll right</button>
+      </div>
+    </div>
+    <section id="AnimationJsDemo" class="wrapper">
+      <ul class="scroller">
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+        <li><button type="button">Button text</button></li>
+      </ul>
+    </section>
+    <script>
+      // Scroll on direction click
+      const wrapperElm = document.getElementById('AnimationJsDemo').querySelector('ul');
+      const buttonElms = [...document.querySelectorAll('.controls button')];
+      buttonElms.forEach(element => {
+        element.addEventListener('click', (event) => {
+          if (element.classList.contains('control-left')) {
+            sideScroll(
+              wrapperElm,
+              'left',
+              20,
+              25,
+              wrapperElm.getBoundingClientRect().width,
+            );
+          } else {
+            sideScroll(
+              wrapperElm,
+              'right',
+              20,
+              25,
+              wrapperElm.getBoundingClientRect().width,
+            );
+          }
+        });        
+      });
+
+      /**
+       * Smooth scroll animation in vanilla JavaScript
+       */
+      function sideScroll(domElement, direction, speed, step, distance) {
+        let scrollAmount = 0;
+        const element = domElement;
+        window.slideTimer = setInterval(() => {
+          if (direction === 'left') {
+            element.scrollLeft -= step
+          } else {
+            element.scrollLeft += step
+          }
+          scrollAmount += step
+          if (scrollAmount >= distance) {
+            window.clearInterval(window.slideTimer);
+          }
+        }, speed);
+      }
+
+      /**
+       * Enable mouse drag of element.
+       */
+      function dragScroll(domElement, speed = 1) {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        domElement.addEventListener('mousedown', (event) => {
+          isDown = true;
+          startX = event.pageX - domElement.offsetLeft;
+          ({
+            scrollLeft
+          } = domElement)
+        });
+
+        domElement.addEventListener('mouseleave', (event) => {
+          isDown = false;
+        });
+
+        domElement.addEventListener('mouseup', (event) => {
+          isDown = false;
+        });
+
+        domElement.addEventListener('mousemove', (event) => {
+          if (isDown) {
+            event.preventDefault();
+            const x = event.pageX - domElement.offsetLeft;
+            const walk = (x - startX) * speed;
+            domElement.scrollLeft = scrollLeft - walk;
+          }
+        })
+      }
+      dragScroll(wrapperElm);
+
+    </script>
+  </body>
+</html>
